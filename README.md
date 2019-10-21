@@ -1,6 +1,8 @@
 # jam
 
-> My gnarly Nuxt.js project
+nuxt 2.10.1
+TypeScript
+Contentful
 
 ## Build Setup
 

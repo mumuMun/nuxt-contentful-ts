@@ -15,45 +15,39 @@ const nuxtConfig = {
    ** Headers of the page
    */
   head: {
-    title: 'System mun',
-    titleTemplate: '%s - ' + 'System mun',
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    title: 'トップ',
+    titleTemplate: 'hogeブログ | %s',
     meta: [
       { charset: 'utf-8' },
-      {
-        hid: 'viewport',
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1'
-      },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content:
-          'フリーランスエンジニア、munのContentful制のポートフォリオサイトです。Webサイト制作、システム開発等、いつでも承ります。'
+        content: 'hogehoge'
       },
-      { hid: 'og:site_name', property: 'og:site_name', content: 'System mun' },
-      { hid: 'og:type', property: 'og:type', content: 'website' },
-      { hid: 'og:url', property: 'og:url', content: process.env.BASE_URL },
-      { hid: 'og:title', property: 'og:title', content: 'System mun' },
+      { property: 'og:site_name', content: 'hoge' },
+      { property: 'og:url', content: '' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: 'hogehoge' },
       {
-        hid: 'og:description',
         property: 'og:description',
-        content: 'フリーランスエンジニア、munのポートフォリオサイトです。'
+        content: 'hoge'
       },
+      { property: 'og:image', content: 'hoge' },
+      { property: 'twitter:card', content: 'summary' },
+      { property: 'twitter:site', content: '@MUNMUN1234' }
+    ],
+    link: [
       {
-        hid: 'og:image',
-        property: 'og:image',
-        content: process.env.BASE_URL + 'ogp.jpg'
-      },
-      { name: 'twitter:card', content: 'summary_large_image' },
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: 'kuroneko1th.png'
+      }
+    ],
+    script: [
       {
-        name: 'google-signin-client_id',
-        content:
-          '254018064243-e3mejlmm3us3k3t8gcra3vha8snje65h.apps.googleusercontent.com'
-      },
-      {
-        name: 'google-signin-scope',
-        content: 'https://www.googleapis.com/auth/analytics.readonly'
+        async: true,
+        src: '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
       }
     ]
   },
@@ -71,7 +65,11 @@ const nuxtConfig = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~plugins/contentful' }
+    { src: '~plugins/contentful' },
+    {
+      src: '~plugins/infinite-loading.ts',
+      mode: 'client'
+    }
     // '~/plugins/vue-scrollto',
     // // { src: '~plugins/analytics' },
     // { src: '~/plugins/filters.js' }

@@ -48,41 +48,41 @@ const LatestList = () => import('~/components/post/LatestList.vue')
   },
   head(this: Slug) {
     return {
-      // title: this.currentPost.fields.title || '',
-      // meta: [
-      //   {
-      //     hid: 'og:title',
-      //     property: 'og:title',
-      //     content: this.currentPost.fields.title || ''
-      //   },
-      //   {
-      //     hid: 'og:description',
-      //     property: 'og:description',
-      //     content: this.currentPost.fields.description || ''
-      //   },
-      //   {
-      //     hid: 'og:image',
-      //     property: 'og:image',
-      //     content:
-      //       `https:${this.currentPost.fields.heroImage.fields.file.url}` || ''
-      //   },
-      //   {
-      //     hid: 'og:title',
-      //     name: 'og:title',
-      //     content: this.currentPost.fields.title || ''
-      //   },
-      //   {
-      //     hid: 'og:description',
-      //     name: 'og:description',
-      //     content: this.currentPost.fields.description || ''
-      //   },
-      //   {
-      //     hid: 'og:image',
-      //     name: 'og:image',
-      //     content:
-      //       `https:${this.currentPost.fields.heroImage.fields.file.url}` || ''
-      //   }
-      // ]
+      title: this.currentPost.fields.title || '',
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.currentPost.fields.title || ''
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.currentPost.fields.description || ''
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content:
+            `https:${this.currentPost.fields.headerImage.fields.file.url}` || ''
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: this.currentPost.fields.title || ''
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: this.currentPost.fields.description || ''
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content:
+            `https:${this.currentPost.fields.headerImage.fields.file.url}` || ''
+        }
+      ]
     }
   }
 })

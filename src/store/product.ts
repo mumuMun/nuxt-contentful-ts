@@ -1,6 +1,7 @@
 import { Module, ActionContext, ActionTree, MutationTree } from 'vuex'
+import dayjs from 'dayjs'
 import { RootState } from './types'
-import { Dictionary, Post, Param } from '~/types/blog'
+import { Dictionary, Post, Param, PostsDate } from '~/types/blog'
 import { createClient } from '~/plugins/contentful'
 
 const client = createClient()
@@ -18,7 +19,8 @@ export const state = (): State => ({
   currentPost: null,
   page: 1,
   pagesTotal: 0,
-  tags: []
+  tags: [],
+  postsDate: {}
 })
 
 export interface State {
@@ -29,6 +31,7 @@ export interface State {
   page: number
   pagesTotal: number
   tags: string[]
+  postsDate: Dictionary<PostsDate>
 }
 
 export interface RootState extends State {
@@ -56,6 +59,9 @@ export const mutations: MutationTree<State> = {
   },
   setTags(state, payload) {
     state.tags = payload
+  },
+  setPostsDate(state, payload) {
+    state.postsDate = payload
   }
 }
 
@@ -117,33 +123,75 @@ export const actions: RootActionTree<State, RootState> = {
         // limit: PAGE
       })
       .then((entries: any) => {
+        const dateArray: string[] = []
+        entries.items.forEach((item: any) => {
+          const date = dayjs(item.fields.createdAt)
+          dateArray.push(date.format('YYYY-MM'))
+        })
+        const counts: Dictionary<number> = {}
+        for (let i = 0; i < dateArray.length; i++) {
+          const key = dateArray[i]
+          counts[key] = counts[key] ? counts[key] + 1 : 1
+        }
+        const countDate: Array<{ date: string; count: string }> = []
+        Object.keys(counts).forEach((key) =>
+          countDate.push({ date: key, count: String(counts[key]) })
+        )
+
         commit('setPosts', entries.items)
         commit('setPagesTotal', Math.ceil(entries.total / PAGE))
+        // commit('setPostsDate', countDate)
       })
 
+    // await client
+    //   .getEntries({
+    //     content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+    //     order: ORDER
+    //   })
+    //   .then((entries: any) => {
+    //     const array: string[] = []
+    //     entries.items.forEach(
+    //       (item: {
+    //         fields: { tags: { forEach: (arg0: (tag: any) => void) => void } }
+    //       }) => {
+    //         item.fields.tags.forEach((tag: string) => {
+    //           array.push(tag)
+    //         })
+    //       }
+    //     )
+
+    //     commit(
+    //       'setTags',
+    //       array.filter((x, i, self) => {
+    //         return self.indexOf(x) === i
+    //       })
+    //     )
+    //   })
+  },
+  async initPostsDate({ commit }: ActionContext<State, RootState>) {
     await client
       .getEntries({
         content_type: process.env.CTF_BLOG_POST_TYPE_ID,
         order: ORDER
+        // skip: (state.page - 1) * PAGE,
+        // limit: PAGE
       })
       .then((entries: any) => {
-        const array: string[] = []
-        entries.items.forEach(
-          (item: {
-            fields: { tags: { forEach: (arg0: (tag: any) => void) => void } }
-          }) => {
-            item.fields.tags.forEach((tag: string) => {
-              array.push(tag)
-            })
-          }
+        const dateArray: string[] = []
+        entries.items.forEach((item: any) => {
+          const date = dayjs(item.fields.createdAt)
+          dateArray.push(date.format('YYYY-MM'))
+        })
+        const counts: Dictionary<number> = {}
+        for (let i = 0; i < dateArray.length; i++) {
+          const key = dateArray[i]
+          counts[key] = counts[key] ? counts[key] + 1 : 1
+        }
+        const countDate: Array<{ date: string; count: string }> = []
+        Object.keys(counts).forEach((key) =>
+          countDate.push({ date: key, count: String(counts[key]) })
         )
-
-        commit(
-          'setTags',
-          array.filter((x, i, self) => {
-            return self.indexOf(x) === i
-          })
-        )
+        commit('setPostsDate', countDate)
       })
   }
 }

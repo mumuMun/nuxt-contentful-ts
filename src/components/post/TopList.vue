@@ -5,14 +5,10 @@
         nuxt-link(:to="{ name: 'posts-slug', params: { slug: post.fields.slug }}")
           .hero-image
             img(:src='post.fields.headerImage.fields.file.url', :alt='post.fields.title', decoding='async')
-          //- //
-            <div class="category">
-            <j-label
-            :tag-text="post.fields.category ? getCategory(post.fields.category) : '未分類'"
-            background-color="#42b883"
-            text-color="#000"
-            ></j-label>
-            </div>
+          .category(v-for='(category) in post.fields.category')
+            div {{ category.fields.name}}
+
+
           .title
             | {{ post.fields.title }}
           .description
@@ -21,9 +17,9 @@
           .date
             | {{ getDate(post.fields.publishDate) }}
         hr
-    //- client-only
-    //-   infinite-loading(spinner='spiral', @infinite='infiniteHandler')
-    //-     span(slot='no-more')
+    client-only
+      infinite-loading(spinner='spiral', @infinite='infiniteHandler')
+        span(slot='no-more')
 
 </template>
 
@@ -33,12 +29,12 @@ import dayjs from 'dayjs'
 
 @Component({})
 export default class Top extends Vue {
-  async applyPage(value: number) {
-    await this.$store.commit('product/setPage', value)
-    await this.$store.dispatch('product/initPosts', {
-      slug: ''
-    })
-  }
+  // async applyPage(value: number) {
+  //   await this.$store.commit('product/setPage', value)
+  //   await this.$store.dispatch('product/initPosts', {
+  //     slug: ''
+  //   })
+  // }
 
   get posts() {
     return this.$store.state.product.posts
@@ -101,9 +97,9 @@ export default class Top extends Vue {
 }
 
 .card .category {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  right: 0;
+  right: 0; */
 }
 
 .card .title {

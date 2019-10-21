@@ -1,13 +1,18 @@
 <template lang="pug">
-  header.header
-    | Munブログ
+  .sidebar
+    ul.archive_date(v-if="postsDate", v-for='(date,k) in postsDate')
+      li {{date.date}}({{date.count}})
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({})
-export default class HeaderText extends Vue {}
+export default class Sidebar extends Vue {
+  get postsDate() {
+    return this.$store.state.product.postsDate
+  }
+}
 </script>
 
 <style scoped>

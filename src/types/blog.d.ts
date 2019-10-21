@@ -3,11 +3,16 @@ interface Dictionary<T> {
 }
 
 export interface Post {
-  title: string;
-  description: string;
-  body: string;
+  title: string
+  description: string
+  body: string
 }
 
 export interface Param {
-  slug: string;
+  slug: string
+}
+
+export interface PostsDate {
+  date: string
+  count: string
 }

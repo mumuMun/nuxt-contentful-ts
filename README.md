@@ -4,7 +4,8 @@
 - Contentful
 
 JAMStackなブログを作る為のテンプレ
-Nuxt, Contentful, Netlyfif
+Nuxt, Contentful, Netlyfif  
+[参考にしたリポジトリ]('https://github.com/jiyuujin/webneko-blog')
 ## Build Setup
 
 ``` bash

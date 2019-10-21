@@ -1,9 +1,10 @@
-# jam
-
+# Nuxt Contentful TypeScript template
 - nuxt 2.10.1
 - TypeScript
 - Contentful
 
+JAMStackなブログを作る為のテンプレ
+Nuxt, Contentful, Netlyfif
 ## Build Setup
 
 ``` bash

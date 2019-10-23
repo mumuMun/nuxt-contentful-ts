@@ -1,10 +1,10 @@
 <template lang="pug">
 .pagination
-  a(:class="page === 1 ? 'disabled' : ''", :style="page === 1 ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='prev(page)')
+  span(:class="page === 1 ? 'disabled' : ''", :style="page === 1 ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='prev(page)')
     | «
-  a(v-for="n of max" :class="page === n ? 'disabled' : ''", :style="page === n ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='goPage(n)')
+  span(v-for="n of max" :class="page === n ? 'disabled' : ''", :style="page === n ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='goPage(n)')
     | {{n}}
-  a(:class="page === max ? 'disabled' : ''", href='#', @click='next(page)')
+  span(:class="page === max ? 'disabled' : ''", href='#', @click='next(page)')
     | »
 
 </template>

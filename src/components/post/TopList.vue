@@ -36,9 +36,12 @@ const Pagination = () => import('~/components/layouts/Pagination.vue')
 })
 export default class Top extends Vue {
   async applyPage(value: number) {
+    console.log('--------')
+    console.log(value)
     await this.$store.commit('product/setPage', value)
     await this.$store.dispatch('product/initPosts', {
-      slug: ''
+      slug: '',
+      date: ''
     })
   }
 

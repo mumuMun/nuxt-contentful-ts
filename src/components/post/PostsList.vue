@@ -38,7 +38,11 @@ export default class DateList extends Vue {
   async applyPage(value: number) {
     await this.$store.commit('product/setPage', value)
     await this.$store.dispatch('product/initPosts', {
-      slug: ''
+      slug: '',
+      date:
+        this.$nuxt.$route.params.date === void 0
+          ? ''
+          : this.$nuxt.$route.params.date
     })
   }
 

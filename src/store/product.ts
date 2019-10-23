@@ -85,6 +85,7 @@ export const actions: RootActionTree<State, RootState> = {
     { commit, state }: ActionContext<State, RootState>,
     params: Param
   ) {
+    // 投稿詳細ページ
     if (params.slug !== '') {
       const LATEST_PAGE = 6
 
@@ -113,12 +114,12 @@ export const actions: RootActionTree<State, RootState> = {
       return
     }
 
+    // 日付（年-月）による絞り込み
     commit('setPage', state.page)
     if (params.date !== '') {
-      console.log('==============')
+      console.log('=====================')
       console.log(params.date)
       // const LATEST_PAGE = 6
-
       await client
         .getEntries({
           content_type: process.env.CTF_BLOG_POST_TYPE_ID,
@@ -152,16 +153,11 @@ export const actions: RootActionTree<State, RootState> = {
         })
       return
     }
-    // console.log('==============')
-    // console.log(dayjs('2019-05').format())
+
+    // デフォルト
     await client
       .getEntries({
         content_type: process.env.CTF_BLOG_POST_TYPE_ID,
-        // order: 'sys.createdAt',
-        // 'sys.createdAt[gte]': dayjs('2019-10').format(),
-        // 'sys.createdAt[lte]': dayjs('2019-10')
-        //   .endOf('month')
-        //   .format(),
         skip: (state.page - 1) * PAGE,
         limit: PAGE
       })

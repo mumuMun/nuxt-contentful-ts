@@ -2,8 +2,7 @@
   .sidebar
     ul.archive_date(v-if="postsDate", v-for='(date,k) in postsDate')
       li
-        nuxt-link(:to="{ name: 'posts-date-date', params: { date: date.date }}")
-          | {{date.date}}({{date.count}})
+        a(:href="'/posts/date/'+date.date") {{date.date}}({{date.count}})
 </template>
 
 <script lang="ts">

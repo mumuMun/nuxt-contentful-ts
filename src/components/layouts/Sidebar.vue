@@ -1,7 +1,9 @@
 <template lang="pug">
   .sidebar
     ul.archive_date(v-if="postsDate", v-for='(date,k) in postsDate')
-      li {{date.date}}({{date.count}})
+      li
+        nuxt-link(:to="{ name: 'posts-date-date', params: { date: date.date }}")
+          | {{date.date}}({{date.count}})
 </template>
 
 <script lang="ts">

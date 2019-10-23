@@ -1,6 +1,5 @@
 <template lang="pug">
 .pagination
-  | {{page}}
   a(:class="page === 1 ? 'disabled' : ''", :style="page === 1 ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='prev(page)')
     | «
   a(v-for="n of max" :class="page === n ? 'disabled' : ''", :style="page === n ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='goPage(n)')

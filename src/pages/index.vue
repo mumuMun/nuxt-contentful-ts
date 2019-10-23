@@ -3,14 +3,15 @@
     header-text
     .main
       sidebar
-      top-list
+      posts-list
         div
 
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import TopList from '~/components/post/TopList.vue'
+// import TopList from '~/components/post/TopList.vue'
+import PostsList from '~/components/post/PostsList.vue'
 import Sidebar from '~/components/layouts/Sidebar.vue'
 const MainTemplate = () => import('~/components/layouts/MainTemplate.vue')
 const HeaderText = () => import('~/components/layouts/HeaderText.vue')
@@ -18,13 +19,15 @@ const HeaderText = () => import('~/components/layouts/HeaderText.vue')
 @Component({
   async asyncData({ store }) {
     await store.dispatch('product/initPosts', {
-      slug: ''
+      slug: '',
+      date: ''
     })
     await store.dispatch('product/initPostsDate')
   },
   components: {
     MainTemplate,
-    TopList,
+    // TopList,
+    PostsList,
     HeaderText,
     Sidebar
   }

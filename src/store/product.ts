@@ -114,13 +114,54 @@ export const actions: RootActionTree<State, RootState> = {
     }
 
     commit('setPage', state.page)
+    if (params.date !== '') {
+      console.log('==============')
+      console.log(params.date)
+      // const LATEST_PAGE = 6
 
+      await client
+        .getEntries({
+          content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+          order: 'sys.createdAt',
+          'sys.createdAt[gte]': dayjs(params.date).format(),
+          'sys.createdAt[lte]': dayjs(params.date)
+            .endOf('month')
+            .format(),
+          skip: (state.page - 1) * PAGE,
+          limit: PAGE
+        })
+        .then((entries: any) => {
+          const dateArray: string[] = []
+          entries.items.forEach((item: any) => {
+            const date = dayjs(item.fields.createdAt)
+            dateArray.push(date.format('YYYY-MM'))
+          })
+          const counts: Dictionary<number> = {}
+          for (let i = 0; i < dateArray.length; i++) {
+            const key = dateArray[i]
+            counts[key] = counts[key] ? counts[key] + 1 : 1
+          }
+          const countDate: Array<{ date: string; count: string }> = []
+          Object.keys(counts).forEach((key) =>
+            countDate.push({ date: key, count: String(counts[key]) })
+          )
+
+          commit('setPosts', entries.items)
+          commit('setPagesTotal', Math.ceil(entries.total / PAGE))
+          // commit('setPostsDate', countDate)
+        })
+      return
+    }
+    // console.log('==============')
+    // console.log(dayjs('2019-05').format())
     await client
       .getEntries({
         content_type: process.env.CTF_BLOG_POST_TYPE_ID,
-        order: 'sys.createdAt',
-        // 'sys.createdAt[gte]': '2019-05-01T00:00:00Z',
-        // 'sys.createdAt[lte]': '2019-05-31T00:00:00Z'
+        // order: 'sys.createdAt',
+        // 'sys.createdAt[gte]': dayjs('2019-10').format(),
+        // 'sys.createdAt[lte]': dayjs('2019-10')
+        //   .endOf('month')
+        //   .format(),
         skip: (state.page - 1) * PAGE,
         limit: PAGE
       })

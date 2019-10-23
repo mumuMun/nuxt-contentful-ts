@@ -18,8 +18,7 @@ const HeaderText = () => import('~/components/layouts/HeaderText.vue')
 @Component({
   async asyncData({ store, params }) {
     await store.dispatch('product/initPosts', {
-      slug: '',
-      date: params.date
+      category: params.category
     })
     // await store.dispatch('product/initPostsDate')
   },

@@ -22,7 +22,8 @@ const HeaderText = () => import('~/components/layouts/HeaderText.vue')
       slug: '',
       date: ''
     })
-    await store.dispatch('product/initPostsDate')
+    // await store.dispatch('product/initPostsDate')
+    // await store.dispatch('product/initPostCategory')
   },
   components: {
     MainTemplate,

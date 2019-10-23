@@ -3,6 +3,10 @@
     ul.archive_date(v-if="postsDate", v-for='(date,k) in postsDate')
       li
         a(:href="'/posts/date/'+date.date") {{date.date}}({{date.count}})
+
+    ul.archive_date(v-if="postsCategory", v-for='(cat,c) in postsCategory')
+      li
+        a(:href="'/posts/category/'+cat.slug") {{cat.name}}
 </template>
 
 <script lang="ts">
@@ -12,6 +16,9 @@ import { Component, Vue } from 'nuxt-property-decorator'
 export default class Sidebar extends Vue {
   get postsDate() {
     return this.$store.state.product.postsDate
+  }
+  get postsCategory() {
+    return this.$store.state.product.categories
   }
 }
 </script>

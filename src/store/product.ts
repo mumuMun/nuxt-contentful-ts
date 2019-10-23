@@ -1,7 +1,7 @@
 import { Module, ActionContext, ActionTree, MutationTree } from 'vuex'
 import dayjs from 'dayjs'
 import { RootState } from './types'
-import { Dictionary, Post, Param, PostsDate } from '~/types/blog'
+import { Dictionary, Post, Param, PostsDate, Category } from '~/types/blog'
 import { createClient } from '~/plugins/contentful'
 
 const client = createClient()
@@ -20,7 +20,8 @@ export const state = (): State => ({
   page: 1,
   pagesTotal: 0,
   tags: [],
-  postsDate: {}
+  postsDate: {},
+  categories: {}
 })
 
 export interface State {
@@ -32,6 +33,7 @@ export interface State {
   pagesTotal: number
   tags: string[]
   postsDate: Dictionary<PostsDate>
+  categories: Dictionary<Category>
 }
 
 export interface RootState extends State {
@@ -62,6 +64,9 @@ export const mutations: MutationTree<State> = {
   },
   setPostsDate(state, payload) {
     state.postsDate = payload
+  },
+  setCategories(state, payload) {
+    state.categories = payload
   }
 }
 
@@ -86,7 +91,7 @@ export const actions: RootActionTree<State, RootState> = {
     params: Param
   ) {
     // 投稿詳細ページ
-    if (params.slug !== '') {
+    if (params.slug !== '' && params.slug !== void 0) {
       const LATEST_PAGE = 6
 
       await client
@@ -116,9 +121,7 @@ export const actions: RootActionTree<State, RootState> = {
 
     // 日付（年-月）による絞り込み
     commit('setPage', state.page)
-    if (params.date !== '') {
-      console.log('=====================')
-      console.log(params.date)
+    if (params.date !== '' && params.date !== void 0) {
       // const LATEST_PAGE = 6
       await client
         .getEntries({
@@ -153,8 +156,44 @@ export const actions: RootActionTree<State, RootState> = {
         })
       return
     }
+    // カテゴリーによる絞り
+    if (params.category !== '' && params.category !== void 0) {
+      // const LATEST_PAGE = 6
+      console.log('=========')
+      console.log(state.categories[params.category].id)
+      await client
+        .getEntries({
+          links_to_entry: state.categories[params.category].id,
+          order: 'sys.createdAt',
+          skip: (state.page - 1) * PAGE,
+          limit: PAGE
+        })
+        .then((entries: any) => {
+          const dateArray: string[] = []
+          entries.items.forEach((item: any) => {
+            const date = dayjs(item.fields.createdAt)
+            dateArray.push(date.format('YYYY-MM'))
+          })
+          const counts: Dictionary<number> = {}
+          for (let i = 0; i < dateArray.length; i++) {
+            const key = dateArray[i]
+            counts[key] = counts[key] ? counts[key] + 1 : 1
+          }
+          const countDate: Array<{ date: string; count: string }> = []
+          Object.keys(counts).forEach((key) =>
+            countDate.push({ date: key, count: String(counts[key]) })
+          )
+
+          commit('setPosts', entries.items)
+          commit('setPagesTotal', Math.ceil(entries.total / PAGE))
+          // commit('setPostsDate', countDate)
+        })
+      return
+    }
 
     // デフォルト
+    console.log('=====================')
+    console.log('デフォルト')
     await client
       .getEntries({
         content_type: process.env.CTF_BLOG_POST_TYPE_ID,
@@ -176,7 +215,7 @@ export const actions: RootActionTree<State, RootState> = {
         Object.keys(counts).forEach((key) =>
           countDate.push({ date: key, count: String(counts[key]) })
         )
-
+        // console.log(entries.items)
         commit('setPosts', entries.items)
         commit('setPagesTotal', Math.ceil(entries.total / PAGE))
         // commit('setPostsDate', countDate)
@@ -232,6 +271,33 @@ export const actions: RootActionTree<State, RootState> = {
           countDate.push({ date: key, count: String(counts[key]) })
         )
         commit('setPostsDate', countDate)
+      })
+  },
+  async initPostCategory({ commit }: ActionContext<State, RootState>) {
+    console.log(process.env.CTF_CATEGORY_TYPE_ID)
+    await client
+      .getEntries({
+        content_type: process.env.CTF_CATEGORY_TYPE_ID
+        // order: ORDER
+        // skip: (state.page - 1) * PAGE,
+        // limit: PAGE
+      })
+      .then((entries: any) => {
+        const catArray: Dictionary<{
+          id: string
+          slug: string
+          name: string
+        }> = {}
+        entries.items.forEach((item: any) => {
+          catArray[item.fields.slug] = {
+            id: item.sys.id,
+            slug: item.fields.slug,
+            name: item.fields.name
+          }
+        })
+
+        console.log(catArray)
+        commit('setCategories', catArray)
       })
   }
 }

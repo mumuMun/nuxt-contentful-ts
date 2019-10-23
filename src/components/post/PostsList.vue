@@ -42,7 +42,11 @@ export default class DateList extends Vue {
       date:
         this.$nuxt.$route.params.date === void 0
           ? ''
-          : this.$nuxt.$route.params.date
+          : this.$nuxt.$route.params.date,
+      category:
+        this.$nuxt.$route.params.category === void 0
+          ? ''
+          : this.$nuxt.$route.params.category
     })
   }
 

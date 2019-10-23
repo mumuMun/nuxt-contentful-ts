@@ -20,4 +20,10 @@ export const createStore = () => {
   return new Vuex.Store<RootState>(store)
 }
 
+export const actions = {
+  async nuxtServerInit({ dispatch }: any) {
+    await dispatch('product/initPostCategory')
+    await dispatch('product/initPostsDate')
+  }
+}
 // export default createStore

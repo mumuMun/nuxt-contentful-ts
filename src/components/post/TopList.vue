@@ -17,24 +17,30 @@
           .date
             | {{ getDate(post.fields.publishDate) }}
         hr
-    client-only
-      infinite-loading(spinner='spiral', @infinite='infiniteHandler')
-        span(slot='no-more')
+    .pager
+      pagination(:page='page', :max='pagesTotal', @page-data='applyPage')
+
+    //- client-only
+    //-   infinite-loading(spinner='spiral', @infinite='infiniteHandler')
+    //-     span(slot='no-more')
 
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import dayjs from 'dayjs'
+const Pagination = () => import('~/components/layouts/Pagination.vue')
 
-@Component({})
+@Component({
+  components: { Pagination }
+})
 export default class Top extends Vue {
-  // async applyPage(value: number) {
-  //   await this.$store.commit('product/setPage', value)
-  //   await this.$store.dispatch('product/initPosts', {
-  //     slug: ''
-  //   })
-  // }
+  async applyPage(value: number) {
+    await this.$store.commit('product/setPage', value)
+    await this.$store.dispatch('product/initPosts', {
+      slug: ''
+    })
+  }
 
   get posts() {
     return this.$store.state.product.posts

@@ -8,7 +8,7 @@ const client = createClient()
 
 const ORDER = '-fields.publishDate'
 
-const PAGE = 9
+const PAGE = 6
 
 const namespaced = true
 
@@ -118,9 +118,11 @@ export const actions: RootActionTree<State, RootState> = {
     await client
       .getEntries({
         content_type: process.env.CTF_BLOG_POST_TYPE_ID,
-        order: ORDER
-        // skip: (state.page - 1) * PAGE,
-        // limit: PAGE
+        order: 'sys.createdAt',
+        // 'sys.createdAt[gte]': '2019-05-01T00:00:00Z',
+        // 'sys.createdAt[lte]': '2019-05-31T00:00:00Z'
+        skip: (state.page - 1) * PAGE,
+        limit: PAGE
       })
       .then((entries: any) => {
         const dateArray: string[] = []
@@ -168,6 +170,7 @@ export const actions: RootActionTree<State, RootState> = {
     //     )
     //   })
   },
+
   async initPostsDate({ commit }: ActionContext<State, RootState>) {
     await client
       .getEntries({
@@ -179,7 +182,7 @@ export const actions: RootActionTree<State, RootState> = {
       .then((entries: any) => {
         const dateArray: string[] = []
         entries.items.forEach((item: any) => {
-          const date = dayjs(item.fields.createdAt)
+          const date = dayjs(item.sys.createdAt)
           dateArray.push(date.format('YYYY-MM'))
         })
         const counts: Dictionary<number> = {}

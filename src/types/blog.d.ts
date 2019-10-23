@@ -10,6 +10,7 @@ export interface Post {
 
 export interface Param {
   slug: string
+  date: string
 }
 
 export interface PostsDate {

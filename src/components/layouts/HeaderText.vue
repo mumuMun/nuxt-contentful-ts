@@ -1,6 +1,6 @@
 <template lang="pug">
   header.header
-    | Munブログ
+    nuxt-link(:to="{name:'index'}") Munブログ
 </template>
 
 <script lang="ts">

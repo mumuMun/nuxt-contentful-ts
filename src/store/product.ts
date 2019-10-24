@@ -159,8 +159,6 @@ export const actions: RootActionTree<State, RootState> = {
     // カテゴリーによる絞り
     if (params.category !== '' && params.category !== void 0) {
       // const LATEST_PAGE = 6
-      console.log('=========')
-      console.log(state.categories[params.category].id)
       await client
         .getEntries({
           links_to_entry: state.categories[params.category].id,
@@ -169,20 +167,20 @@ export const actions: RootActionTree<State, RootState> = {
           limit: PAGE
         })
         .then((entries: any) => {
-          const dateArray: string[] = []
-          entries.items.forEach((item: any) => {
-            const date = dayjs(item.fields.createdAt)
-            dateArray.push(date.format('YYYY-MM'))
-          })
-          const counts: Dictionary<number> = {}
-          for (let i = 0; i < dateArray.length; i++) {
-            const key = dateArray[i]
-            counts[key] = counts[key] ? counts[key] + 1 : 1
-          }
-          const countDate: Array<{ date: string; count: string }> = []
-          Object.keys(counts).forEach((key) =>
-            countDate.push({ date: key, count: String(counts[key]) })
-          )
+          // const dateArray: string[] = []
+          // entries.items.forEach((item: any) => {
+          //   const date = dayjs(item.fields.createdAt)
+          //   dateArray.push(date.format('YYYY-MM'))
+          // })
+          // const counts: Dictionary<number> = {}
+          // for (let i = 0; i < dateArray.length; i++) {
+          //   const key = dateArray[i]
+          //   counts[key] = counts[key] ? counts[key] + 1 : 1
+          // }
+          // const countDate: Array<{ date: string; count: string }> = []
+          // Object.keys(counts).forEach((key) =>
+          //   countDate.push({ date: key, count: String(counts[key]) })
+          // )
 
           commit('setPosts', entries.items)
           commit('setPagesTotal', Math.ceil(entries.total / PAGE))
@@ -274,7 +272,12 @@ export const actions: RootActionTree<State, RootState> = {
       })
   },
   async initPostCategory({ commit }: ActionContext<State, RootState>) {
-    console.log(process.env.CTF_CATEGORY_TYPE_ID)
+    const catArray: Dictionary<{
+      id: string
+      slug: string
+      name: string
+      count: string
+    }> = {}
     await client
       .getEntries({
         content_type: process.env.CTF_CATEGORY_TYPE_ID
@@ -283,22 +286,32 @@ export const actions: RootActionTree<State, RootState> = {
         // limit: PAGE
       })
       .then((entries: any) => {
-        const catArray: Dictionary<{
-          id: string
-          slug: string
-          name: string
-        }> = {}
         entries.items.forEach((item: any) => {
           catArray[item.fields.slug] = {
             id: item.sys.id,
             slug: item.fields.slug,
-            name: item.fields.name
+            name: item.fields.name,
+            count: ''
           }
         })
-
-        console.log(catArray)
-        commit('setCategories', catArray)
       })
+    for (const [key, value] of Object.entries(catArray)) {
+      await client
+        .getEntries({
+          links_to_entry: value.id
+        })
+        .then((entries: any) => {
+          catArray[value.slug] = {
+            id: value.id,
+            slug: value.slug,
+            name: value.name,
+            count: entries.total
+          }
+          console.log(catArray)
+        })
+    }
+
+    commit('setCategories', catArray)
   }
 }
 

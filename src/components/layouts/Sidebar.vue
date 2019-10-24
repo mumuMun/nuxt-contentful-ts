@@ -6,7 +6,7 @@
 
     ul.archive_date(v-if="postsCategory", v-for='(cat,c) in postsCategory')
       li
-        a(:href="'/posts/category/'+cat.slug") {{cat.name}}
+        a(:href="'/posts/category/'+cat.slug") {{cat.name}}({{cat.count}})
 </template>
 
 <script lang="ts">

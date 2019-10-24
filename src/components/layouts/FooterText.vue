@@ -1,16 +1,25 @@
 <template lang="pug">
   footer
     p footer
+
+    ul.archive_date(v-if="postsDate", v-for='(date,k) in postsDate')
+      li
+        a(:href="'/posts/date/'+date.date") {{date.date}}({{date.count}})
+
+    ul.archive_date(v-if="postsCategory", v-for='(cat,c) in postsCategory')
+      li
+        a(:href="'/posts/category/'+cat.slug") {{cat.name}}
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
 export default class Footer extends Vue {
-  data() {
-    return {
-      // imgName: require('../../static/bakeneko2.png')
-    }
+  get postsDate() {
+    return this.$store.state.product.postsDate
+  }
+  get postsCategory() {
+    return this.$store.state.product.categories
   }
 }
 </script>

@@ -281,9 +281,6 @@ export const actions: RootActionTree<State, RootState> = {
     await client
       .getEntries({
         content_type: process.env.CTF_CATEGORY_TYPE_ID
-        // order: ORDER
-        // skip: (state.page - 1) * PAGE,
-        // limit: PAGE
       })
       .then((entries: any) => {
         entries.items.forEach((item: any) => {
@@ -295,7 +292,7 @@ export const actions: RootActionTree<State, RootState> = {
           }
         })
       })
-    for (const [key, value] of Object.entries(catArray)) {
+    for (const [, value] of Object.entries(catArray)) {
       await client
         .getEntries({
           links_to_entry: value.id
@@ -307,7 +304,6 @@ export const actions: RootActionTree<State, RootState> = {
             name: value.name,
             count: entries.total
           }
-          console.log(catArray)
         })
     }
 

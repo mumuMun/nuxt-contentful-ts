@@ -1,18 +1,22 @@
 <template lang="pug">
   footer
-    p footer
-
-    ul.archive_date(v-if="postsDate", v-for='(date,k) in postsDate')
-      li
-        a(:href="'/posts/date/'+date.date") {{date.date}}({{date.count}})
-
-    ul.archive_date(v-if="postsCategory", v-for='(cat,c) in postsCategory')
-      li
-        a(:href="'/posts/category/'+cat.slug") {{cat.name}}
+    .row
+      .logo HOGE
+      .category_list
+        div.list_title CATEGORY
+        ul.archive_list.archive_date(v-if="postsCategory")
+          li( v-for='(cat,c) in postsCategory')
+            a(:href="'/posts/category/'+cat.slug") {{cat.name}}
+      .archives
+        div.list_title ARCHIVES
+        ul.archive_list.archive_date(v-if="postsDate")
+          li(v-for='(date,k) in postsDate')
+            a(:href="'/posts/date/'+date.date") {{ getDate(date.date)}}({{date.count}})
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import dayjs from 'dayjs'
 
 export default class Footer extends Vue {
   get postsDate() {
@@ -21,21 +25,29 @@ export default class Footer extends Vue {
   get postsCategory() {
     return this.$store.state.product.categories
   }
+  getDate(date: Date) {
+    return dayjs(date).format('YYYY.MM')
+  }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 footer {
-  margin-top: 24px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  margin-top: 2.5rem;
   min-height: 300px;
-  padding: 30px 0;
-  background-color: #35495e;
-  color: #fff;
+  padding: 4rem 0 0;
+  background-color: #fff;
+  color: #000;
   max-width: 100%;
+  border-top: $border-color solid 2px;
+  @include flex(center, flex-start);
+  .row {
+    align-items: flex-start;
+    width: 100%;
+    > div {
+      width: (100 / 3) * 1%;
+    }
+  }
 }
 
 .footer-text {
@@ -68,7 +80,6 @@ footer {
   align-items: center;
   font-size: 1.8vmin;
 }
-
 @media (max-width: 500px) {
   footer {
     margin-top: 0;

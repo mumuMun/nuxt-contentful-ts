@@ -1,16 +1,20 @@
 <template lang="pug">
   .sidebar
-    ul.archive_date(v-if="postsDate", v-for='(date,k) in postsDate')
-      li
-        a(:href="'/posts/date/'+date.date") {{date.date}}({{date.count}})
-
-    ul.archive_date(v-if="postsCategory", v-for='(cat,c) in postsCategory')
-      li
-        a(:href="'/posts/category/'+cat.slug") {{cat.name}}({{cat.count}})
+    .category_list
+      div.list_title CATEGORY
+      ul.archive_list.archive_date(v-if="postsCategory")
+        li( v-for='(cat,c) in postsCategory')
+          a(:href="'/posts/category/'+cat.slug") {{cat.name}}
+    .archives
+      div.list_title ARCHIVES
+      ul.archive_list.archive_date(v-if="postsDate")
+        li(v-for='(date,k) in postsDate')
+          a(:href="'/posts/date/'+date.date") {{ getDate(date.date)}}({{date.count}})
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import dayjs from 'dayjs'
 
 @Component({})
 export default class Sidebar extends Vue {
@@ -20,10 +24,13 @@ export default class Sidebar extends Vue {
   get postsCategory() {
     return this.$store.state.product.categories
   }
+  getDate(date: Date) {
+    return dayjs(date).format('YYYY.MM')
+  }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .header {
   position: fixed;
   width: 100%;
@@ -34,5 +41,11 @@ export default class Sidebar extends Vue {
   font-size: 3vmin;
   z-index: 24;
   text-align: center;
+}
+.archives {
+  margin-top: 3.5rem;
+  .archive_list {
+    margin-top: 1.5rem;
+  }
 }
 </style>

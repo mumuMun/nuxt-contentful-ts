@@ -21,7 +21,8 @@ export const state = (): State => ({
   pagesTotal: 0,
   tags: [],
   postsDate: {},
-  categories: {}
+  categories: {},
+  relatedPosts: {}
 })
 
 export interface State {
@@ -34,6 +35,7 @@ export interface State {
   tags: string[]
   postsDate: Dictionary<PostsDate>
   categories: Dictionary<Category>
+  relatedPosts: Dictionary<Post>
 }
 
 export interface RootState extends State {
@@ -67,6 +69,9 @@ export const mutations: MutationTree<State> = {
   },
   setCategories(state, payload) {
     state.categories = payload
+  },
+  setRelatedPosts(state, payload) {
+    state.relatedPosts = payload
   }
 }
 
@@ -167,31 +172,13 @@ export const actions: RootActionTree<State, RootState> = {
           limit: PAGE
         })
         .then((entries: any) => {
-          // const dateArray: string[] = []
-          // entries.items.forEach((item: any) => {
-          //   const date = dayjs(item.fields.createdAt)
-          //   dateArray.push(date.format('YYYY-MM'))
-          // })
-          // const counts: Dictionary<number> = {}
-          // for (let i = 0; i < dateArray.length; i++) {
-          //   const key = dateArray[i]
-          //   counts[key] = counts[key] ? counts[key] + 1 : 1
-          // }
-          // const countDate: Array<{ date: string; count: string }> = []
-          // Object.keys(counts).forEach((key) =>
-          //   countDate.push({ date: key, count: String(counts[key]) })
-          // )
-
           commit('setPosts', entries.items)
           commit('setPagesTotal', Math.ceil(entries.total / PAGE))
-          // commit('setPostsDate', countDate)
         })
       return
     }
 
     // デフォルト
-    console.log('=====================')
-    console.log('デフォルト')
     await client
       .getEntries({
         content_type: process.env.CTF_BLOG_POST_TYPE_ID,
@@ -243,6 +230,20 @@ export const actions: RootActionTree<State, RootState> = {
     //       })
     //     )
     //   })
+  },
+  async getRelatedPostData(
+    { commit, state }: ActionContext<State, RootState>,
+    params: Param
+  ) {
+    await client
+      .getEntries({
+        links_to_entry: state.categories[params.category].id,
+        order: 'sys.createdAt',
+        limit: 3
+      })
+      .then((entries: any) => {
+        commit('setRelatedPosts', entries.items)
+      })
   },
 
   async initPostsDate({ commit }: ActionContext<State, RootState>) {

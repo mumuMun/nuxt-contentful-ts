@@ -17,3 +17,15 @@ export default class Detail extends Vue {
   @Prop() post?: object
 }
 </script>
+
+<style lang="scss" scoped>
+.post-detail {
+  /deep/ {
+    p {
+      margin-top: 3.5rem;
+      img {
+      }
+    }
+  }
+}
+</style>

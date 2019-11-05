@@ -1,22 +1,18 @@
 <template lang="pug">
   .top
-    .card(v-for='(post, index) in posts')
-      template(v-if='index < count')
-        nuxt-link(:to="{ name: 'posts-slug', params: { slug: post.fields.slug }}")
-          .hero-image
-            img(:src='post.fields.headerImage.fields.file.url', :alt='post.fields.title', decoding='async')
-          .category(v-for='(category) in post.fields.category')
-            div {{ category.fields.name}}
-
-
-          .title
-            | {{ post.fields.title }}
-          .description
-            p
-              | {{ post.fields.description }}
-          .date
-            | {{ getDate(post.fields.publishDate) }}
-        hr
+    .postList
+      .card(v-for='(post, index) in posts')
+        template(v-if='index < count')
+          nuxt-link(:to="{ name: 'posts-slug', params: { slug: post.fields.slug }}")
+            .image_block
+              div
+                img(:src='post.fields.headerImage.fields.file.url', :alt='post.fields.title', decoding='async')
+            .title
+              v-clamp(autoresize='', :max-lines='2') {{ post.fields.title }}
+            .date
+              | {{ getDate(post.fields.publishDate) }}
+            .category(v-for='(category) in post.fields.category')
+              div {{ category.fields.name}}
     .pager
       pagination(:page='page', :max='pagesTotal', @page-data='applyPage')
 
@@ -29,10 +25,11 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import dayjs from 'dayjs'
+import VClamp from 'vue-clamp'
 const Pagination = () => import('~/components/layouts/Pagination.vue')
 
 @Component({
-  components: { Pagination }
+  components: { Pagination, VClamp }
 })
 export default class DateList extends Vue {
   async applyPage(value: number) {
@@ -74,7 +71,7 @@ export default class DateList extends Vue {
   }
 
   getDate(date: Date) {
-    return dayjs(date).format('MM月 DD日')
+    return dayjs(date).format('YYYY.MM.DD')
   }
 
   infiniteHandler($state: any) {
@@ -93,34 +90,36 @@ export default class DateList extends Vue {
 }
 </script>
 
-<style scoped>
-.top {
+<style scoped lang="scss">
+.postList {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .card {
-  width: calc(33.3% - 24px);
-  margin: 8px;
+  width: calc((100% - (2% * 2)) / 3);
+  margin-right: 2%;
   position: relative;
-}
-
-.card .date {
-  font-size: 14px;
-  text-align: right;
-}
-
-.card .category {
-  /* position: absolute;
-  top: 0;
-  right: 0; */
-}
-
-.card .title {
-  font-size: 2.4vmin;
-  height: 3.6em;
-  line-height: 1.2;
-  text-align: center;
+  box-shadow: none;
+  text-align: left;
+  cursor: pointer;
+  .date {
+    font-size: 14px;
+  }
+  .title {
+    font-size: 1.5rem;
+    height: auto;
+    line-height: 1.2;
+    padding: 0;
+    margin-top: 1.3rem;
+  }
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
+  &:nth-child(n + 4) {
+    margin-top: 5rem;
+  }
 }
 
 .card .description {
@@ -136,16 +135,32 @@ export default class DateList extends Vue {
 .card hr {
   color: #808080;
 }
-
-.hero-image img {
+.image_block {
+  position: relative;
   width: 100%;
-  height: 200px;
+  &:before {
+    content: '';
+    display: block;
+    padding-top: 75%; /* 高さを幅の75%に固定 */
+  }
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+}
+.image_block img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
 /* Pagination */
 .pager {
-  margin: 0 auto;
+  margin: 5.4rem auto 0;
+  @include flex(center, center);
 }
 
 /* Infinite Loading */
@@ -156,7 +171,11 @@ infinite-loading {
   width: 680px;
   margin: 100px 0;
 }
-
+.date,
+.category {
+  font-size: 0.75rem;
+  font-family: $family-sans;
+}
 @media (max-width: 500px) {
   .card {
     width: calc(100% - 10px);

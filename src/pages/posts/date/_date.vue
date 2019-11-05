@@ -1,6 +1,5 @@
 <template lang="pug">
   main-template
-    header-text
     .main
       sidebar
       posts-list
@@ -13,7 +12,6 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import PostsList from '~/components/post/PostsList.vue'
 import Sidebar from '~/components/layouts/Sidebar.vue'
 const MainTemplate = () => import('~/components/layouts/MainTemplate.vue')
-const HeaderText = () => import('~/components/layouts/HeaderText.vue')
 
 @Component({
   async asyncData({ store, params }) {
@@ -26,7 +24,6 @@ const HeaderText = () => import('~/components/layouts/HeaderText.vue')
   components: {
     MainTemplate,
     PostsList,
-    HeaderText,
     Sidebar
   }
 })

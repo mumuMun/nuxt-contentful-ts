@@ -113,20 +113,18 @@ const nuxtConfig = {
     breaks: true, // 改行コードを<br>に変換する
     html: true, // HTML タグを有効にする
     linkify: true, // URLに似たテキストをリンクに自動変換する
-    typography: true // 言語に依存しないきれいな 置換 + 引用符 を有効にします。
-    // use: [
-    //   'markdown-it-toc' // 目次を作るためのライブラリ。別途インストールが必要
-    // ]
+    typography: true, // 言語に依存しないきれいな 置換 + 引用符 を有効にします。
+    use: ['markdown-it-div']
   },
   styleResources: {
     scss: ['~/assets/sass/variable.scss']
   },
   webfontloader: {
     google: {
-      families: ['Montserrat+Subrayada', 'Roboto:400,500,700'],
+      families: ['Noto+Serif+JP:400,500,600,700', 'Noto+Sans+JP:400,500,700'],
       urls: [
-        'https://fonts.googleapis.com/css?family=Montserrat+Subrayada&display=swap',
-        'https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap'
+        'https://fonts.googleapis.com/css?family=Noto+Serif+JP:400,500,600,700&display=swap',
+        'https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,700&display=swap'
       ]
     }
   },
@@ -145,7 +143,8 @@ const nuxtConfig = {
     /*
      ** You can extend webpack config here
      */
-    // vendor: ['dayjs'],
+    vendor: ['truncator'],
+    transpile: ['vue-clamp', 'resize-detector'],
     extend(config: any, ctx: any) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {

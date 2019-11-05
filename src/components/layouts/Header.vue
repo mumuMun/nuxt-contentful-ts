@@ -7,19 +7,19 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({})
-export default class HeaderText extends Vue {}
+export default class Header extends Vue {}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .header {
-  position: fixed;
   width: 100%;
-  padding: 12px;
+  padding: 4rem 0;
   top: 0;
   left: 0;
   line-height: 1.2;
   font-size: 3vmin;
   z-index: 24;
   text-align: center;
+  border-bottom: $border-color solid 2px;
 }
 </style>

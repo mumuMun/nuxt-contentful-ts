@@ -2,7 +2,7 @@
 .pagination
   span(:class="page === 1 ? 'disabled' : ''", :style="page === 1 ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='prev(page)')
     | «
-  span(v-for="n of max" :class="page === n ? 'disabled' : ''", :style="page === n ? 'opacity: 0.5;' : 'opacity: 1;'", href='#', @click='goPage(n)')
+  span(v-for="n of max" :class="page === n ? 'disabled' : ''", href='#', @click='goPage(n)')
     | {{n}}
   span(:class="page === max ? 'disabled' : ''", href='#', @click='next(page)')
     | »
@@ -36,29 +36,16 @@ export default class Pagination extends Vue {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .pagination {
   display: inline-block;
-}
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-  transition: background-color 0.3s;
-  border: 1px solid #ddd;
-  margin: 0 4px;
-}
-
-.pagination a.active {
-  background-color: #42b883;
-  color: white;
-  border: 1px solid #42b883;
-}
-
-.pagination a:hover:not(.active) {
-  background-color: #ddd;
+  font-size: 0.875rem;
+  @include flex(center, center);
+  span {
+    margin: 0 1rem;
+    color: #000;
+    font-family: $family-sans;
+  }
 }
 
 .disabled {

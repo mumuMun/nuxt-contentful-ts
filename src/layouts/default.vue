@@ -1,9 +1,29 @@
-<template>
-  <div>
-    <nuxt />
-  </div>
+<template lang="pug">
+  .wrap
+    header-block
+    nuxt.main_container
 </template>
 
+<script lang="ts">
+import { Vue, Component } from 'nuxt-property-decorator'
+// import TopList from '~/components/post/TopList.vue'
+const HeaderBlock = () => import('~/components/layouts/Header.vue')
+
+@Component({
+  async asyncData({ store }) {
+    await store.dispatch('product/initPosts', {
+      slug: '',
+      date: ''
+    })
+    // await store.dispatch('product/initPostsDate')
+    // await store.dispatch('product/initPostCategory')
+  },
+  components: {
+    HeaderBlock
+  }
+})
+export default class Index extends Vue {}
+</script>
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -51,5 +71,8 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+.main_container {
+  padding-top: 4rem;
 }
 </style>

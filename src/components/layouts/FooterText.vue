@@ -42,6 +42,7 @@ footer {
   border-top: $border-color solid 2px;
   @include flex(center, flex-start);
   .row {
+    display: flex;
     align-items: flex-start;
     width: 100%;
     > div {
@@ -80,14 +81,15 @@ footer {
   align-items: center;
   font-size: 1.8vmin;
 }
-@media (max-width: 500px) {
-  footer {
-    margin-top: 0;
-    min-height: 0;
-  }
 
-  .copyright {
-    font-size: 12px;
+@media screen and (max-width: 1023px) {
+  footer {
+    .row {
+      > .logo {
+        text-align: center;
+        width: 100%;
+      }
+    }
   }
 }
 </style>

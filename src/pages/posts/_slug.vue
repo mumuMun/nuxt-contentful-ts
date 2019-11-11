@@ -2,7 +2,7 @@
   main-template(v-if='currentPost')
     .main
       .main_content
-        sidebar
+        sidebar.is-hidden-touch
         .article-wrap
           .post-meta
             .date
@@ -194,16 +194,34 @@ export default class Slug extends Vue {
 footer {
   margin-top: 6rem;
 }
-@media (max-width: 500px) {
+@media screen and (max-width: 1023px) {
   .cover .title {
     font-size: 24px;
     line-height: 24px;
   }
   .article {
-    width: 92%;
-    margin: 2% 4% 2% 4%;
-    text-align: center;
+    width: 100%;
+    text-align: left;
     overflow: hidden;
+  }
+  .post-meta {
+    .title {
+      font-size: 1.272727273rem;
+      line-height: 2rem;
+      margin-top: 0.5rem;
+    }
+  }
+  .related-posts-list-container {
+    padding-top: 1.2rem;
+    margin-bottom: 1.5rem;
+    .title {
+      font-family: $family-sans;
+      text-align: center;
+      letter-spacing: 4px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 1.272727273rem;
+    }
   }
 }
 </style>

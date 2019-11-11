@@ -59,4 +59,14 @@ export default class Pagination extends Vue {
 .disabled {
   pointer-events: none;
 }
+@media screen and (max-width: 1023px) {
+  .pagination {
+    display: inline-block;
+    font-size: 10px;
+    @include flex(center, center);
+    span {
+      margin: 0 0.5rem;
+    }
+  }
+}
 </style>

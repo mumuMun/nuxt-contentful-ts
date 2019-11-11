@@ -59,12 +59,6 @@ export default class RelatedPostsList extends Vue {
     padding: 0;
     margin-top: 1.3rem;
   }
-  &:nth-child(3n) {
-    margin-right: 0;
-  }
-  &:nth-child(n + 4) {
-    margin-top: 5rem;
-  }
 }
 
 .card .description {
@@ -121,18 +115,34 @@ infinite-loading {
   font-size: 0.75rem;
   font-family: $family-sans;
 }
-@media (max-width: 500px) {
+@media screen and (min-width: 1024px) {
   .card {
-    width: calc(100% - 10px);
-    margin: 5px;
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+    &:nth-child(n + 4) {
+      margin-top: 5rem;
+    }
   }
-
-  .card .title {
-    font-size: 2.4vmax;
-  }
-
-  .card .description {
-    font-size: 1.8vmax;
+}
+@media screen and (max-width: 1023px) {
+  .card {
+    width: calc((100% - (2% * 1)) / 2);
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+    &:nth-child(n + 3) {
+      margin-top: 2rem;
+    }
+    .title {
+      font-size: 1.1rem;
+    }
+    .date,
+    .category {
+      font-size: 10px;
+      transform: scale(0.6);
+      transform-origin: left center;
+    }
   }
 }
 </style>

@@ -121,9 +121,12 @@ const nuxtConfig = {
   },
   webfontloader: {
     google: {
-      families: ['Noto+Serif+JP:400,500,600,700', 'Noto+Sans+JP:400,500,700'],
+      families: [
+        'Noto+Serif+JP:200,400,500,600,700',
+        'Noto+Sans+JP:400,500,700'
+      ],
       urls: [
-        'https://fonts.googleapis.com/css?family=Noto+Serif+JP:400,500,600,700&display=swap',
+        'https://fonts.googleapis.com/css?family=Noto+Serif+JP:200,400,500,600,700&display=swap',
         'https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,700&display=swap'
       ]
     }

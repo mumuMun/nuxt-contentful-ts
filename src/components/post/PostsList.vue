@@ -187,8 +187,32 @@ infinite-loading {
       margin-right: 0;
     }
     &:nth-child(n + 3) {
-      margin-top: 2rem;
+      margin-top: 3rem;
     }
+    .title {
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+    }
+    a {
+      display: block;
+      line-height: 0.8rem;
+    }
+    .date,
+    .category {
+      font-size: 10px;
+      transform: scale(0.6);
+      transform-origin: left top;
+      line-height: normal;
+    }
+    .date {
+      margin-top: -4%;
+    }
+    .category {
+      margin-top: -4%;
+    }
+  }
+  .pager {
+    margin-top: 3rem;
   }
 }
 </style>

@@ -84,10 +84,27 @@ footer {
 
 @media screen and (max-width: 1023px) {
   footer {
+    min-height: unset;
+    padding-bottom: 6rem;
     .row {
       > .logo {
         text-align: center;
         width: 100%;
+        margin-bottom: 1.5rem;
+      }
+      > .category_list,
+      > .archives {
+        width: 24%;
+        .list_title {
+          font-size: 0.9rem;
+        }
+        > ul {
+          margin-top: 1rem;
+          line-height: 1.5rem;
+        }
+      }
+      > .archives {
+        margin-left: 1rem;
       }
     }
   }

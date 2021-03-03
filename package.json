@@ -27,7 +27,7 @@
     "nuxt": "^2.0.0",
     "nuxt-property-decorator": "^2.4.1",
     "nuxt-webfontloader": "^1.1.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "resize-detector": "^0.2.0",
     "truncator": "^1.2.0",
